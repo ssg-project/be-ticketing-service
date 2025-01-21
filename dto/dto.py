@@ -39,5 +39,4 @@ class Test(BaseModel):
 
 ### ticket
 class ReserveTicketRequest(BaseModel):
-    user_id: int
     concert_id: int
