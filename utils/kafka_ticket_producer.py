@@ -1,8 +1,9 @@
 from kafka import KafkaProducer
-import json
+import json, os
 
 class KafkaTicketProducer:
-    def __init__(self, bootstrap_servers=['localhost:9093']):
+    bootstrap_servers=os.getenv('BOOTSTRAP_HOST', 'localhost')
+    def __init__(self, bootstrap_servers=[f'{bootstrap_servers}:9093']):
         self.producer = KafkaProducer(
             bootstrap_servers=bootstrap_servers,
             value_serializer=lambda x: json.dumps(x).encode('utf-8')
