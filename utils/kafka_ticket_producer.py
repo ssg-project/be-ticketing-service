@@ -2,7 +2,7 @@ from kafka import KafkaProducer
 import json, os
 
 class KafkaTicketProducer:
-    bootstrap_servers=os.getenv('BOOTSTRAP_HOST', 'localhost')
+    bootstrap_servers=os.getenv('BOOTSTRAP_HOST', '127.0.0.1')
     def __init__(self, bootstrap_servers=[f'{bootstrap_servers}:9093']):
         self.producer = KafkaProducer(
             bootstrap_servers=bootstrap_servers,

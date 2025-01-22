@@ -4,7 +4,7 @@ import asyncio
 
 class TicketService:
     def __init__(self):
-        bootstrap_servers=os.getenv('BOOTSTRAP_HOST', 'localhost')
+        bootstrap_servers=os.getenv('BOOTSTRAP_HOST', '127.0.0.1')
         self.kafka_producer = AIOKafkaProducer(bootstrap_servers=f"{bootstrap_servers}:9092")
         
     async def reserve_ticket(self, user_id: int, concert_id: int):
