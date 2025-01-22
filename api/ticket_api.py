@@ -1,6 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
-from redis import Redis
-from sqlalchemy.orm import Session
 from services.ticket_service import TicketService
 from dto.dto import *
 import json
