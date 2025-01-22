@@ -1,10 +1,11 @@
 from aiokafka import AIOKafkaProducer
 import json
 import asyncio
+from ..config.config import KAFKA_BROKER_URL, KAFKA_TOPIC
 
 class TicketService:
     def __init__(self):
-        self.kafka_producer = AIOKafkaProducer(bootstrap_servers="127.0.0.1:9092")
+        self.kafka_producer = AIOKafkaProducer(bootstrap_servers=KAFKA_BROKER_URL)
         
     async def reserve_ticket(self, user_id: int, concert_id: int):
         # Kafka로 티켓 예약 이벤트 발행
@@ -22,7 +23,7 @@ class TicketService:
 
         try:
             # Kafka에 티켓 예약 이벤트를 비동기적으로 발행
-            await self.kafka_producer.send("ticketing-reservation", json.dumps(message).encode('utf-8'))
+            await self.kafka_producer.send(KAFKA_TOPIC, json.dumps(message).encode('utf-8'))
             print("Message sent successfully")
         except Exception as e:
             print(f"Error sending message: {e}")
