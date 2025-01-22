@@ -1,7 +1,7 @@
 from aiokafka import AIOKafkaProducer
 import json
 import asyncio
-from ..config.config import KAFKA_BROKER_URL, KAFKA_TOPIC
+from config.config import KAFKA_BROKER_URL, KAFKA_TOPIC
 
 class TicketService:
     def __init__(self):
