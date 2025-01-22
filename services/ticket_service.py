@@ -1,11 +1,10 @@
 from aiokafka import AIOKafkaProducer
-import json, os
+import json
 import asyncio
 
 class TicketService:
     def __init__(self):
-        bootstrap_servers=os.getenv('BOOTSTRAP_HOST', '127.0.0.1')
-        self.kafka_producer = AIOKafkaProducer(bootstrap_servers=f"{bootstrap_servers}:9092")
+        self.kafka_producer = AIOKafkaProducer(bootstrap_servers="127.0.0.1:9092")
         
     async def reserve_ticket(self, user_id: int, concert_id: int):
         # Kafka로 티켓 예약 이벤트 발행

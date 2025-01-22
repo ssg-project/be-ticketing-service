@@ -18,6 +18,7 @@ async def reserve_ticket(
         ticket_service = TicketService()
 
         result = await ticket_service.reserve_ticket(
+            # request_body.user_id,
             current_user["user_id"],
             request_body.concert_id
         )
