@@ -15,4 +15,4 @@ COPY . /app/
 ENV PYTHONPATH=/app
 
 # FastAPI 애플리케이션 실행
-CMD ["python", "main.py"]
+CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8002"]
