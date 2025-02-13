@@ -39,4 +39,4 @@ jobs:
           token: ${{ secrets.PAT }}
           repository: ssg-project/ticketing-ops
           event-type: update-image
-          client-payload: '{"sha": "${{ github.sha }}", "repo": "user"}'
+          client-payload: '{"sha": "${{ github.sha }}", "repo": "ticketing"}'
