@@ -8,7 +8,7 @@ import logging
 # 로깅 설정
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    format="%(asctime)s - ticketing-service - %(name)s - %(levelname)s - %(message)s",
     handlers=[logging.StreamHandler()]
 )
 
