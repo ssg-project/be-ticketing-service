@@ -6,34 +6,27 @@ import uvicorn
 import logging
 import os
 
+# Kubernetes 환경에서 파드 및 노드 정보 가져오기
+pod_name = os.environ.get("POD_NAME", "unknown-pod")
+node_name = os.environ.get("NODE_NAME", "unknown-node")
+
+
 # 로거 생성
 logger = logging.getLogger("ticketing-service")
 logger.setLevel(logging.INFO)
 
-pod_name = os.environ.get("POD_NAME", "unknown-pod")
-node_name = os.environ.get("NODE_NAME", "unknown-node")
 
-# `pod_name`, `node_name`을 자동으로 추가하는 필터
-class PodNodeFilter(logging.Filter):
-    def filter(self, record):
-        record.pod_name = pod_name
-        record.node_name = node_name
-        return True
 
-# 중복 핸들러 방지 및 로깅 포맷 설정
+
+# 중복 핸들러 방지
 if not logger.hasHandlers():
     handler = logging.StreamHandler()
     formatter = logging.Formatter(
-        "%(asctime)s - ticketing-service - %(name)s - %(levelname)s - %(message)s "
-        "{pod: %(pod_name)s, node: %(node_name)s}"
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s "
+        f"{{pod: {pod_name}, node: {node_name}}}"  # pod_name, node_name 직접 추가
     )
     handler.setFormatter(formatter)
-    handler.addFilter(PodNodeFilter())
     logger.addHandler(handler)
-
-logger.propagate = False #root logger로 로그 전파 방지
-
-
 
 app = FastAPI()
 
@@ -65,6 +58,6 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8002,
         reload=True,
-        log_config=None,  # uvicorn 기본 로깅 비활성화 (root logger 변경 방지)
-        log_level="critical"  # uvicorn의 추가 로그 출력을 방지
+        log_config=None,  # Uvicorn 기본 로깅 비활성화
+        log_level="info"  # 기존의 "critical" 대신 "info" 유지
     )

@@ -5,7 +5,9 @@ import json
 import logging
 
 router = APIRouter(prefix='/ticket', tags=['ticket'])
-logger = logging.getLogger(__name__)
+
+
+logger = logging.getLogger("ticketing-service")
 
 @router.post("/reserve", description='')
 async def reserve_ticket(
