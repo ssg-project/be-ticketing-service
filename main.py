@@ -1,33 +1,30 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from api.ticket_api import router as ticket_router
 from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 import uvicorn
 import logging
+import os
 
 # 로거 생성
 logger = logging.getLogger("ticketing-service")
 logger.setLevel(logging.INFO)
 
 
-# 로깅 설정
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format="%(asctime)s - ticketing-service - %(name)s - %(levelname)s - %(message)s",
-#     handlers=[logging.StreamHandler()]
-# )
-
-handler = logging.StreamHandler()
-formatter = logging.Formatter(
-    "%(asctime)s - ticketing-service - %(name)s - %(levelname)s - %(message)s"
-)
-handler.setFormatter(formatter)
-
-# 기존 핸들러 제거 후 새로운 핸들러 추가 (중복 방지)
+#로깅 핸들러 설정 (중복 방지)
 if not logger.hasHandlers():
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter(
+        "%(asctime)s - ticketing-service - %(name)s - %(levelname)s - %(message)s "
+        "{pid: %(process)d, tid: %(thread)d}"
+    )
+    handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-logger.propagate = False
+logger.propagate = False  #root logger로 로그 전파 방지
+
+
+
 app = FastAPI()
 
 # middleware 설정
@@ -53,4 +50,11 @@ async def health_check():
 Instrumentator().instrument(app).expose(app)
 
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", host="0.0.0.0", port=8002, reload=True, log_config=None)
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8002,
+        reload=True,
+        log_config=None,  # uvicorn 기본 로깅 비활성화 (root logger 변경 방지)
+        log_level="critical"  # uvicorn의 추가 로그 출력을 방지
+    )
