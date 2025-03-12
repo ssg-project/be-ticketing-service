@@ -13,7 +13,7 @@ if not os.getenv("APP_ENV"):
     KAFKA_GROUP_ID = os.getenv("KAFKA_GROUP_ID")
 
 else:
-    secret_name = "secret/ticketing/fe"
+    secret_name = "secret/ticketing/ticketing"
     region_name = "ap-northeast-2"
 
     session = boto3.session.Session()
